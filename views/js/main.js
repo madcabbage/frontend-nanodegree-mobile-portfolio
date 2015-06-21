@@ -142,11 +142,12 @@ pizzaIngredients.crusts = [
   "Stuffed Crust"
 ];
 
-
 // Logging pizza locatons in a global array so don't need to keep calculating phase
-var phases = [];
-var items = [];
-var pos = [];
+var pizzaData = {
+  'phases': [],
+  'items': [],
+  'pos': []
+}
 
 // Name generator pulled from http://saturdaykid.com/usernames/generator.html
 // Capitalizes first letter of each word
@@ -516,24 +517,26 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   // Move each item
-  for (var i = 0; i < items.length; i++) {
-    items[i].style.left = pos[i] + 'px';
+  for (var i = 0; i < pizzaData["items"].length; i++) {
+    pizzaData["items"][i].style.left = pizzaData["pos"][i] + 'px';
+  }
+
+  for (var i = 0; i < pizzaData["items"].length; i++) {
+    pizzaData["phases"][i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    pizzaData["pos"][i] = pizzaData["items"][i].basicLeft + 100 * pizzaData["phases"][i];
   }
 
   // Update new positions and phases
-  var reCalc = new Worker('js/Worker.js');
-  var data = {
-    "phases": phases,
-    "pos": pos,
-    "items": items
-  }
-  console.log(data);
-  reCalc.addEventListener('reCalc', function(e) {
-    console.log('Worker said: ', e.data);
+  /*
+  var w = new Worker('js/Worker.js');
+  w.addEventListener('message', function(e) {
+    pizzaData = e.data;
+    console.log(pizzaData["phases"]);
   }, false);
 
-
-
+  //console.log(document.body.scrollTop);
+  w.postMessage(JSON.stringify(pizzaData));//JSON.stringify(pizzaData));
+*/
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -562,12 +565,10 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
-  items = document.querySelectorAll('.mover');
-  for (var i = 0; i < items.length; i++) {
-    phases[i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-  }
-  for (var i = 0; i < items.length; i++) {
-    pos[i] = items[i].basicLeft + 100 * phases[i];
+  pizzaData["items"] = document.querySelectorAll('.mover');
+  for (var i = 0; i < pizzaData["items"].length; i++) {
+    pizzaData["phases"][i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    pizzaData["pos"][i] = pizzaData["items"][i].basicLeft + 100 * pizzaData["phases"][i];
   }
   updatePositions();
 });
