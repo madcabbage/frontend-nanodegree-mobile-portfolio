@@ -142,6 +142,12 @@ pizzaIngredients.crusts = [
   "Stuffed Crust"
 ];
 
+
+// Logging pizza locatons in a global array so don't need to keep calculating phase
+var phases = [];
+var items = [];
+var pos = [];
+
 // Name generator pulled from http://saturdaykid.com/usernames/generator.html
 // Capitalizes first letter of each word
 String.prototype.capitalize = function() {
@@ -400,6 +406,7 @@ var pizzaElementGenerator = function(i) {
 
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) {
+
   window.performance.mark("mark_start_resize");   // User Timing API function
 
   // Changes the value for the size of the pizza above the slider
@@ -450,11 +457,17 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+    //var dx = determineDx($(".randomPizzaContainer"), size);
+    //var newwidth = ($(".randomPizzaContainer").offsetWidth + dx) + 'px';
+    var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[0], size);
+    var newwidth = (document.querySelectorAll(".randomPizzaContainer")[0].offsetWidth + dx) + 'px';
+    $(".randomPizzaContainer").css('width', newwidth);
+  /*  for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
       var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
       var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
       document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
-    }
+    }*/
+
   }
 
   changePizzaSizes(size);
@@ -502,18 +515,25 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-  var phases = [];
-  var pos = [];
+  // Move each item
   for (var i = 0; i < items.length; i++) {
-    phases[i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
-    pos[i] = items[i].basicLeft + 100 * phases[i];
-  }
-
-  for (var i = 0; i < items.length; i++) {
-    //var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     items[i].style.left = pos[i] + 'px';
   }
+
+  // Update new positions and phases
+  var reCalc = new Worker('js/Worker.js');
+  var data = {
+    "phases": phases,
+    "pos": pos,
+    "items": items
+  }
+  console.log(data);
+  reCalc.addEventListener('reCalc', function(e) {
+    console.log('Worker said: ', e.data);
+  }, false);
+
+
+
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -541,6 +561,13 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
+  }
+  items = document.querySelectorAll('.mover');
+  for (var i = 0; i < items.length; i++) {
+    phases[i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+  }
+  for (var i = 0; i < items.length; i++) {
+    pos[i] = items[i].basicLeft + 100 * phases[i];
   }
   updatePositions();
 });

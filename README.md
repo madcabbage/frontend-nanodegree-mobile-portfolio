@@ -4,9 +4,24 @@
 -- Things done --
 -----------------
 
+index.html
 Used Grunt to compress and optimise images (compression @50%)
 Used Sublime Minify to create minified versions of html, css, js files
 Added the whole of main css file into index.html (all are above the fold styles) to prevent render blocking css, keeping print separate
+Added jquery to pizza.html
+Only got the dx and newWidth values once, as no point in getting each for each individual pizza element
+Resizing pizzas with jquery instead of going through a loop, resizing each one individually
+
+pizza
+main.js
+moved phases and index out of updatePositions so they're not getting calculated for each pizza position. Instead, it finds the positions and stores them once, then AFTER moving pizza positions, updates the phases array. Therefore, relcalculate styles after the animation has taken place
+
+-------------------
+-- Problems/todo --
+-------------------
+
+Minify pizza js once done
+Couldn't get http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/ to work - possibly China GFW problem :(
 
 
 Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).

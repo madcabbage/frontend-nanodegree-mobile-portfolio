@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/madcabbage/1-portfolio-project",
   "devDependencies": {
-    "grunt": "^0.4.5"
+    "grunt": "^0.4.5",
+    "ngrok": "^0.1.99"
   },
   "dependencies": {
     "grunt-cli": "^0.1.13"
