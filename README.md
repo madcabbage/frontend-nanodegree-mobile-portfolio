@@ -22,6 +22,8 @@ moved phases and index out of updatePositions so they're not getting calculated 
 
 Minify pizza js once done
 Couldn't get http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/ to work - possibly China GFW problem :(
+re-size the pizza image to normal(ish) and create a thumbnail version of it
+Add willchange transform to pizza sizes
 
 
 Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
