@@ -462,7 +462,7 @@ var resizePizzas = function(size) {
     //var newwidth = ($(".randomPizzaContainer").offsetWidth + dx) + 'px';
     var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[0], size);
     var newwidth = (document.querySelectorAll(".randomPizzaContainer")[0].offsetWidth + dx) + 'px';
-    $(".randomPizzaContainer").css('width', newwidth);
+    $(".randomPizzaContainer").css("width", newwidth);
   /*  for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
       var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
       var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
@@ -518,6 +518,7 @@ function updatePositions() {
 
   // Move each item
   for (var i = 0; i < pizzaData["items"].length; i++) {
+    //console.log(pizzaData["items"][i]);
     pizzaData["items"][i].style.left = pizzaData["pos"][i] + 'px';
   }
 
