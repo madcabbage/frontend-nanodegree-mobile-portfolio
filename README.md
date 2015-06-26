@@ -12,9 +12,17 @@ Added jquery to pizza.html
 Only got the dx and newWidth values once, as no point in getting each for each individual pizza element
 Resizing pizzas with jquery instead of going through a loop, resizing each one individually
 
-pizza
+-- pizza --
+
+index.html
+added jquery
+
 main.js
 moved phases and index out of updatePositions so they're not getting calculated for each pizza position. Instead, it finds the positions and stores them once, then AFTER moving pizza positions, updates the phases array. Therefore, relcalculate styles after the animation has taken place
+
+style.css
+Added will-transform to mover and pizza elements
+added transition
 
 -------------------
 -- Problems/todo --
