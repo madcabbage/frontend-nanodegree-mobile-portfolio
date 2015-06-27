@@ -458,17 +458,9 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    //var dx = determineDx($(".randomPizzaContainer"), size);
-    //var newwidth = ($(".randomPizzaContainer").offsetWidth + dx) + 'px';
     var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[0], size);
     var newwidth = (document.querySelectorAll(".randomPizzaContainer")[0].offsetWidth + dx) + 'px';
     $(".randomPizzaContainer").css("width", newwidth);
-  /*  for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
-    }*/
-
   }
 
   changePizzaSizes(size);
@@ -518,26 +510,15 @@ function updatePositions() {
 
   // Move each item
   for (var i = 0; i < pizzaData["items"].length; i++) {
-    //console.log(pizzaData["items"][i]);
     pizzaData["items"][i].style.left = pizzaData["pos"][i] + 'px';
   }
 
+  // Update new positions and phases
+  var top = document.body.scrollTop / 1250;
   for (var i = 0; i < pizzaData["items"].length; i++) {
-    pizzaData["phases"][i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    pizzaData["phases"][i] = Math.sin(top + (i % 5));
     pizzaData["pos"][i] = pizzaData["items"][i].basicLeft + 100 * pizzaData["phases"][i];
   }
-
-  // Update new positions and phases
-  /*
-  var w = new Worker('js/Worker.js');
-  w.addEventListener('message', function(e) {
-    pizzaData = e.data;
-    console.log(pizzaData["phases"]);
-  }, false);
-
-  //console.log(document.body.scrollTop);
-  w.postMessage(JSON.stringify(pizzaData));//JSON.stringify(pizzaData));
-*/
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
   // Super easy to create custom metrics.
@@ -572,4 +553,13 @@ document.addEventListener('DOMContentLoaded', function() {
     pizzaData["pos"][i] = pizzaData["items"][i].basicLeft + 100 * pizzaData["phases"][i];
   }
   updatePositions();
+});
+
+// scrolls to the name of the element clicked
+$(".actionButton").click(function() {
+    $('html, body').animate({
+        scrollTop: $('#' + this.name).offset().top,
+        queue: false,
+       // step: updatePositions(),
+    }, 100);
 });
