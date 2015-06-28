@@ -143,12 +143,17 @@ pizzaIngredients.crusts = [
 ];
 
 // Logging pizza locatons in a global array so don't need to keep calculating phase
-var pizzaData = {
+/*var pizzaData = {
   'phases': [],
   'items': [],
   'pos': []
-}
+}*/
+//var pizzaData = [];
 
+// Size of the pizzaData array, populated after they've been added
+//var pizzaCount = 0;
+
+// Stores randomPizzaContainer elements
 var pizzasContainer = [];
 
 // Name generator pulled from http://saturdaykid.com/usernames/generator.html
@@ -477,8 +482,8 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -511,15 +516,15 @@ function updatePositions() {
   window.performance.mark("mark_start_frame");
 
   // Move each item
-  for (var i = 0; i < pizzaData["items"].length; i++) {
-    pizzaData["items"][i].style.left = pizzaData["pos"][i] + 'px';
-  }
 
   // Update new positions and phases
+  //var pizzaData = document.getElementsByClassName('.mover');
   var top = document.body.scrollTop / 1250;
-  for (var i = 0; i < pizzaData["items"].length; i++) {
-    pizzaData["phases"][i] = Math.sin(top + (i % 5));
-    pizzaData["pos"][i] = pizzaData["items"][i].basicLeft + 100 * pizzaData["phases"][i];
+  var pizzaData = document.getElementsByClassName('mover');
+  var phase;
+  for (var i = 0; i < pizzaData.length; i++) {
+    phase = Math.sin(top + (i % 5)) * 100;
+    pizzaData[i].style.left = pizzaData[i].basicLeft + phase + 'px';
   }
 
   // User Timing API to the rescue again. Seriously, it's worth learning.
@@ -539,7 +544,8 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  var rows = ((window.innerHeight / 200) + 1);
+  for (var i = 0; i < (rows * cols); i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -549,11 +555,14 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
     document.querySelector("#movingPizzas1").appendChild(elem);
   }
-  pizzaData["items"] = document.querySelectorAll('.mover');
-  for (var i = 0; i < pizzaData["items"].length; i++) {
+  //pizzaData["items"] = document.querySelectorAll('.mover');
+
+ /* for (var i = 0; i < pizzaData["items"].length; i++) {
     pizzaData["phases"][i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     pizzaData["pos"][i] = pizzaData["items"][i].basicLeft + 100 * pizzaData["phases"][i];
-  }
+  }*/
+  //pizzaData = document.getElementsByClassName('mover');
+  //pizzaCount = pizzaData.length;
   pizzasContainer = document.getElementsByClassName('randomPizzaContainer');
   updatePositions();
 });

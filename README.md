@@ -27,6 +27,7 @@ Open the views/pizza.html file for the pizza page
  | main.js
  |- moved phases and index out of updatePositions so they're not getting calculated for each pizza position. Instead, it finds the positions and stores them once, then AFTER moving pizza positions, updates the phases array. Therefore, relcalculate styles after the animation has taken place
  |- added function to scroll to an element in the page
+ |- reduced number of pizzas in background so that they're based on the screen height instead of being 200
 
  | pizza style.css
  |- Added will-transform to mover and pizza elements
