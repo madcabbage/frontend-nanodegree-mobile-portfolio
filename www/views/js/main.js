@@ -149,6 +149,8 @@ var pizzaData = {
   'pos': []
 }
 
+var pizzasContainer = [];
+
 // Name generator pulled from http://saturdaykid.com/usernames/generator.html
 // Capitalizes first letter of each word
 String.prototype.capitalize = function() {
@@ -458,9 +460,9 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[0], size);
-    var newwidth = (document.querySelectorAll(".randomPizzaContainer")[0].offsetWidth + dx) + 'px';
-    $(".randomPizzaContainer").css("width", newwidth);
+    var dx = determineDx(pizzaContainers[0], size);
+    var newWidth = (pizzaContainers[0].offsetWidth + dx) + "px";
+    pizzaContainers.style.width = newWidth;
   }
 
   changePizzaSizes(size);
@@ -552,6 +554,7 @@ document.addEventListener('DOMContentLoaded', function() {
     pizzaData["phases"][i] = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     pizzaData["pos"][i] = pizzaData["items"][i].basicLeft + 100 * pizzaData["phases"][i];
   }
+  pizzasContainer = document.getElementsByClassName('randomPizzaContainer');
   updatePositions();
 });
 

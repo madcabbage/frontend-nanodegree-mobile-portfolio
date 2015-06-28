@@ -1,5 +1,13 @@
 ---  Website Performance Optimization portfolio project
 
+------------------
+-- Instructions --
+------------------
+
+Open the index.html file for the main page
+Open the views/pizza.html file for the pizza page
+
+
 -----------------
 -- Things done --
 -----------------
